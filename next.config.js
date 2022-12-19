@@ -21,7 +21,7 @@ module.exports = {
       return [
         {
           source: '/api/:path*',
-          destination: 'https://albpro.vercel.app/:path*',
+          destination: 'https://albpro.vercel.app/*',
         },
       ]
     },
