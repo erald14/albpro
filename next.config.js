@@ -15,3 +15,14 @@ module.exports = withBundleAnalyzer({
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
 });
+// next.config.js
+module.exports = {
+  async rewrites() {
+      return [
+        {
+          source: '/api/:path*',
+          destination: 'https://api.example.com/:path*',
+        },
+      ]
+    },
+};
