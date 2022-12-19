@@ -1,42 +1,46 @@
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
-} from 'next';
-import { useState } from 'react';
-import { RecoilRoot } from 'recoil';
+} from "next";
+import React, { useState } from "react";
 
-import { getListOfPros } from '@/modules/pros/data/getListOfPros';
-import type { Pro } from '@/modules/pros/interfaces/pros';
-import { handleQueryString } from '@/utils/handle-query';
-import { useDebounce } from '@/utils/hooks/debounce';
+import { CategoryDropDown } from "@/modules/occupations/components/CategoryDropDown";
+import { usePros } from "@/modules/pros/hooks/usePros";
+import { handleQueryString } from "@/utils/handle-query";
+import { useDebounce } from "@/utils/hooks/debounce";
 
 export default function SearchPage(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const [searchInput, setSearchInput] = useState<string>(props.search);
-  const [pros, setPros] = useState<Pro[]>(props.pros);
+
+  const { pros, setSearch, isFetching } = usePros();
 
   useDebounce(
     () => {
-      getListOfPros(searchInput).then((res) => setPros(res));
+      setSearch(searchInput);
     },
     500,
     searchInput
   );
 
   return (
-    <RecoilRoot>
-      <div>
-        <input
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
-        {pros.map((pro, index) => {
+    <div>
+      <CategoryDropDown />
+      <input
+        placeholder="search"
+        type="text"
+        value={searchInput}
+        onChange={(e) => setSearchInput(e.target.value)}
+      />
+      {!isFetching ? (
+        pros.map((pro, index) => {
           return <div key={index}>{pro.name}</div>;
-        })}
-      </div>
-    </RecoilRoot>
+        })
+      ) : (
+        <>loading</>
+      )}
+    </div>
   );
 }
 
@@ -49,7 +53,7 @@ export async function getServerSideProps(
   const searchString = handleQueryString(search);
   return {
     props: {
-      pros: await getListOfPros(searchString),
+      pros: [],
       search: searchString,
     },
   };

@@ -2,13 +2,13 @@ export const handleQueryString = (
   query: string | string[] | undefined
 ): string => {
   if (!query) {
-    return '';
+    return "";
   }
-  if (typeof query === 'string') {
+  if (typeof query === "string") {
     return query;
   }
   if (query.length > 0 && query[0]) {
     return query[0];
   }
-  return '';
+  return "";
 };
