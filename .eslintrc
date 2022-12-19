@@ -7,7 +7,7 @@
   ],
   "rules": {
     "prettier/prettier": [
-      "error",
+      "warning",
       {
         "singleQuote": false,
         "endOfLine": "auto"
@@ -35,7 +35,7 @@
       },
       "rules": {
         "prettier/prettier": [
-          "error",
+          "warning",
           {
             "singleQuote": false,
             "endOfLine": "auto"
